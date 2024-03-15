@@ -1,0 +1,16 @@
+{
+    "name": "carvalho/sefaz-monitor",
+    "description": "Monitora o webservice da SEFAZ",
+    "autoload": {
+        "psr-4": {
+            "SefazMonitor\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "carvalho57",
+            "email": "gabrielfeocarvalho57@gmail.com"
+        }
+    ],
+    "require": {}
+}

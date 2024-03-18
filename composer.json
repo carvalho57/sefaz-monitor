@@ -3,7 +3,8 @@
     "description": "Monitora o webservice da SEFAZ",
     "autoload": {
         "psr-4": {
-            "SefazMonitor\\": "app/"
+            "App\\": "src/",
+            "Framework\\": "framework/"
         }
     },
     "authors": [
@@ -11,6 +12,5 @@
             "name": "carvalho57",
             "email": "gabrielfeocarvalho57@gmail.com"
         }
-    ],
-    "require": {}
+    ]
 }

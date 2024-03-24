@@ -26,3 +26,4 @@ https://www.youtube.com/watch?v=u3hN_r1DwSQ
 https://en.wikipedia.org/wiki/SOAP
 https://www.youtube.com/watch?v=it8ybkQuAh8
 https://www.youtube.com/watch?v=-Pa0t8pRmDM
+https://www.w3.org/TR/2000/NOTE-SOAP-20000508/

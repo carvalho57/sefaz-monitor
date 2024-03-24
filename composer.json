@@ -12,5 +12,8 @@
             "name": "carvalho57",
             "email": "gabrielfeocarvalho57@gmail.com"
         }
-    ]
+    ],
+    "require-dev": {
+        "symfony/var-dumper": "^7.0"
+    }
 }

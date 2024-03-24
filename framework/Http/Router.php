@@ -12,10 +12,17 @@ class Router
 
     public function addRoute(string $method, string $path, array $handler): self
     {
-        $this->routes[$method][$path] = $handler;
+        $this->routes[strtoupper($method)][$path] = $handler;
         return $this;
     }
 
+    public function addGet(string $path, array $handler) : self {
+        return $this->addRoute('GET', $path, $handler);
+    }
+
+    public function addPost(string $path, array $handler) : self {
+        return $this->addRoute('POST', $path, $handler);
+    }
 
     public function dispatcher(string $method, string $uri): array
     {

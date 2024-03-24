@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Framework;
+namespace Framework\Http;
 
 class View
 {
@@ -28,7 +28,7 @@ class View
         return ob_get_clean();
     }
 
-    public static function make(string $viewPath, array $params): static
+    public static function make(string $viewPath, array $params = []): static
     {
         return new static($viewPath, $params);
     }

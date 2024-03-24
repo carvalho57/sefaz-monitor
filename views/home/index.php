@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Monitor</title>
 </head>
 <body>
-    <h1> Home Index </h1>
+<img src="https://upload.wikimedia.org/wikipedia/commons/1/10/Brazil_Blank_Map.svg" usemap="#image-map">
 </body>
 </html>

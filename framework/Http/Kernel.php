@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Framework\Http;
 
+use Framework\Exception\RouteNotFoundException;
+
 /* Core of the aplication, it receive a request and send a response back,
 passing it to the specific method configure on a route table.*/
 class Kernel
@@ -24,7 +26,7 @@ class Kernel
 
         try {
             if ($status === Router::NOT_FOUND) {
-                throw new \RuntimeException('Route Not found exception');
+                throw new RouteNotFoundException('Route Not found exception');
             }
 
             $response = null;
@@ -39,21 +41,21 @@ class Kernel
                 $controller = new $controller();
 
                 if (!method_exists($controller, $method)) {
-                    throw new \RuntimeException('Controller method dont exist');
+                    throw new RouteNotFoundException('Controller method dont exist');
                 }
 
                 $response = call_user_func_array([$controller, $method], ['request' => $request]);
             }
 
             if (!$response instanceof Response) {
-                return new Response($response);
+                return new Response((string)$response);
             }
 
             return $response;
-        } catch(\RuntimeException) {
-            return new Response('Not Found', 404);
-        } catch(\Exception) {
-            return new Response('Internal error', 500);
+        } catch(\RuntimeException $e) {
+            return new Response($e->getMessage(), 404);
+        } catch(\Exception $e) {
+            return new Response('Internal error: Contact technical support', 500);
         }
     }
 }

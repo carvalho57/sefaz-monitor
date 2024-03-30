@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: app
+    working_dir: /var/www/
+    restart: always
+    volumes:
+      - ../:/var/www
+  nginx:
+    image: nginx:1.19-alpine
+    container_name: nginx
+    restart: always
+    ports:
+      - 8080:80
+    volumes:
+      - ../:/var/www
+      - ./nginx:/etc/nginx/conf.d
+  db:
+    image: mysql
+    container_name: db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: app
+    ports:
+      - 3306:3306

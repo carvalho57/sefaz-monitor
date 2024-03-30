@@ -26,6 +26,7 @@ class Response
     public function addHeader(string $key, string $value)
     {
         $this->headers[$key] = $value;
+        return $this;
     }
 
     public function json(array $object): static

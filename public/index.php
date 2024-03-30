@@ -8,8 +8,11 @@ use Framework\Http\Router;
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
-
 define('VIEWS_PATH', dirname(__DIR__) . '/views');
+
+$dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
+$dotenv->load();
+
 
 $router = new Router();
 $router->addGet('/', [App\Controller\MonitorController::class, 'index']);

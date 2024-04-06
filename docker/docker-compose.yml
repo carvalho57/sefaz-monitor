@@ -26,5 +26,9 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: app
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
+    volumes:
+      - ./seed:/docker-entrypoint-initdb.d
     ports:
       - 3306:3306

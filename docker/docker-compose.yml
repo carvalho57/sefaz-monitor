@@ -5,30 +5,32 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
-    container_name: app
+      args:
+        USER_ID: '${WWWUSER:-1000}'
+        GROUP_ID: '${WWWGROUP:-1000}'
+        USER: '${USER:-whoami}'
+    container_name: sefaz-monitor-app
     working_dir: /var/www/
-    restart: always
     volumes:
       - ../:/var/www
   nginx:
     image: nginx:1.19-alpine
     container_name: nginx
-    restart: always
     ports:
       - 8080:80
     volumes:
       - ../:/var/www
       - ./nginx:/etc/nginx/conf.d
   db:
-    image: mysql
     container_name: db
-    restart: always
+    image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: app
-      MYSQL_USER: user
-      MYSQL_PASSWORD: user
+    ports:
+      - "3306:3306"
     volumes:
       - ./seed:/docker-entrypoint-initdb.d
-    ports:
-      - 3306:3306
+      - sefaz-monitor-db:/var/lib/mysql
+volumes:
+  sefaz-monitor-db:

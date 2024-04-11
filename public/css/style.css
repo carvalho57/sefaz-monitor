@@ -33,15 +33,53 @@ header h1 {
 }
 
 .btn-update {
-  display: block;
+  display: inline-block;
+  margin: 0.3rem;
   padding: 0.5rem;
   font-size: 14px;
 }
 
-
-#svg-map path {
-  fill: #26b126;
+.label {
+  display: inline-block;
+  color: white;
+  padding: 8px;
+  border-radius: 3px;
+  margin:0.1rem;
 }
+
+.normal {
+  background-color: #04AA6D;
+} 
+
+.normal path {
+  fill: #04AA6D;  
+}
+
+.instable {
+  background-color: #ff9800;
+} 
+
+.instable path {
+  fill: #ff9800;
+}
+
+.stopped {
+  background-color: #f44336;
+} 
+
+.stopped path{
+  fill: #f44336;
+} 
+
+
+/* #svg-map path {
+  fill: #b1267c;
+} 
+
+#svg-map .circle {
+  fill: #ac26b1;
+} */
+
 #svg-map text {
   fill: #fff;
   font: 12px Arial-BoldMT, sans-serif;
@@ -57,9 +95,7 @@ header h1 {
 #svg-map a:hover path {
   fill: #4e4e4e !important;
 }
-#svg-map .circle {
-    fill: #26b126;
-}
+
 #svg-map a:hover .circle {
     fill: #4e4e4e !important;
   cursor: pointer;

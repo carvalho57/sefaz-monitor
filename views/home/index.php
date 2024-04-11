@@ -11,6 +11,7 @@
 <body>
   <header>
     <h1>SEFAZ Monitor</h1>
+    <button class="btn-update" type="button">Atualizar Status</button>
   </header>
 <div class="container">  
   <svg version="1.1" id="svg-map" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="450px" height="460px" viewBox="0 0 450 460" enable-background="new 0 0 450 460" xml:space="preserve">
@@ -341,7 +342,7 @@
       </a>
       <a xlink:href="#paraiba" class="estado" uf="PB" nome="Paraíba">
       <title>Paraíba</title>
-        <path stroke="#FFFFFF" stroke-width="1.0404" stroke-linecap="round" stroke-linejoin="round" d="M401.575,141.096
+      <path stroke="#FFFFFF" stroke-width="1.0404" stroke-linecap="round" stroke-linejoin="round" d="M401.575,141.096
         c2.081-3.081,16.791-6.82,19.117-4.616c0,1.918,7.259,1.686,10.133,2.712c-0.492,3.038,12.652,1.533,14.408,2.259
         c1.421,0.589,3.833,11.983,1.421,12.202c-0.874-1.124-2.083-1.739-3.586-1.835c-2.957-0.027-2.546,1.863-4.383,3.108
         c-2.626,1.767-6.571,1.917-9.558,2.109c-0.162,1.232-3.943,4.438-5.259,4.916c-3.122,1.149-2.657-2.727-5.095-3.602
@@ -357,7 +358,12 @@
     <h2>Selecione o estado para saber o status</h2>
   </div>  
 </div>
-<button class="btn-update" type="button">Atualizar</button>
+<div class="legend">
+  <span class="label normal">Normal</span>  
+  <span class="label instable">Instabilidade</span>
+  <span class="label stopped">Parado</span>    
+</div>
+
 </div>
 </body>
 </html>

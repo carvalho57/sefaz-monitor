@@ -10,7 +10,7 @@ Disponibiliza um mapa do Brasil e informa o status da NF-e para cada estado, uti
 ## Requisitos
 
 - [X] Como usuário gostaria de visualizar um mapa interativo do Brasil. Quando passar o mouse sobre cada estado, um
-      card deve ser atualizado com as informações do webservice do estado (Tempo médio de resposta, se esta em contigência)
+      card deve ser atualizado com as informações do webservice do estado (Tempo médio de resposta, se esta em contigência).
 - [X] Como um usuário gostaria de um botão **Atualizar** que, quando clicado atualize as informações dos estados.
 - [ ] Fazer a consulta ao servidor de contingência para verificar se esta habilitado.
 - [ ] Como usuário gostária que houvesse legendas dos status (por exemplo: Normal, Parado, Contigência).
@@ -19,9 +19,9 @@ Disponibiliza um mapa do Brasil e informa o status da NF-e para cada estado, uti
 
 - [ ] Criar um processo **cronjob** que ficará realizando a consulta de tempos em tempos.
 - [ ] Encaminhar informações para o front, sempre que o status atualizar.
-- [ ] Refatorar: temos esses serviços para CT-e também e provavelmente outros documentos, como deixar o fluxo generico o suficiente para 
-permitir adicionar esses outros documentos sem muitas alterações
-- [ ] Implementar testes
+- [ ] Refatorar: temos esses serviços para CT-e também e provavelmente outros documentos, como deixar o fluxo genérico o suficiente para 
+permitir adicionar esses outros documentos sem muitas alterações.
+- [ ] Implementar testes.
 - [ ] Implementar cadastro da empresa e certificado.
 
 ## Como executar

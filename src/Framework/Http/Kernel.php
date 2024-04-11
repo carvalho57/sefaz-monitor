@@ -12,6 +12,7 @@ class Kernel
 {
     public function __construct(private Router $router)
     {
+        #TODO Inject log here
     }
 
     public function handle(Request $request): Response
@@ -55,7 +56,7 @@ class Kernel
         } catch(\RuntimeException $e) {
             return new Response($e->getMessage(), 404);
         } catch(\Exception $e) {
-            return new Response('Internal error: Contact technical support', 500);
+            return new Response('Internal error: Contact technical support' . $e->getMessage(), 500);
         }
     }
 }

@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+ }
+ 
+body {  
+  font-family: "Open Sans", sans-serif;
+}
+
+header h1 {  
+  padding: 20px;
+}
+
+.container {  
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left;
+}
+.card {
+  padding: 1rem;
+  margin: 2rem; 
+  box-shadow: 0 0 10px rgba(93, 93, 93, 0.2);
+  text-align: center;
+  width: 330px;
+  height: 100%;
+}
+
+.card-info { 
+  text-align: left;
+}
+
+.btn-update {
+  display: block;
+  padding: 0.5rem;
+  font-size: 14px;
+}
+
+
+#svg-map path {
+  fill: #26b126;
+}
+#svg-map text {
+  fill: #fff;
+  font: 12px Arial-BoldMT, sans-serif;
+  cursor: pointer;
+}
+#svg-map a {
+  text-decoration: none;
+}
+#svg-map a:hover {
+  cursor: pointer;
+  text-decoration: none;
+}
+#svg-map a:hover path {
+  fill: #4e4e4e !important;
+}
+#svg-map .circle {
+    fill: #26b126;
+}
+#svg-map a:hover .circle {
+    fill: #4e4e4e !important;
+  cursor: pointer;
+}
+
+.modal {
+  padding: 1em;
+  max-width: 300px;
+  border: 0;
+  background-color: white;
+  margin: auto;
+}
+
+.modal::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+
+.close__button {
+  padding: 0.3rem;
+  background-color: #464646;
+  color: rgb(255, 255, 255);
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  float: right;
+  margin-top: 10px;
+}
+
+.close__button:hover,
+.close__button:focus {
+  background-color: #000000;
+  color: white;
+
+}

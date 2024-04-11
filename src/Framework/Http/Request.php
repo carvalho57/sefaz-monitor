@@ -38,4 +38,14 @@ class Request
     {
         return $this->server['REQUEST_METHOD'];
     }
+
+    public function addParam(string $key, $value)
+    {
+        $this->getParams[$key] = $value;
+    }
+
+    public function addParams(array $params)
+    {
+        $this->getParams = array_merge($this->getParams, $params);
+    }
 }

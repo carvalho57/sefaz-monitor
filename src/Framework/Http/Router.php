@@ -16,11 +16,13 @@ class Router
         return $this;
     }
 
-    public function addGet(string $path, array $handler) : self {
+    public function get(string $path, array $handler): self
+    {
         return $this->addRoute('GET', $path, $handler);
     }
 
-    public function addPost(string $path, array $handler) : self {
+    public function post(string $path, array $handler): self
+    {
         return $this->addRoute('POST', $path, $handler);
     }
 

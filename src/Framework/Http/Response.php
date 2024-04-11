@@ -29,10 +29,14 @@ class Response
         return $this;
     }
 
-    public function json(array $object): static
+    public function json(array|object|string $content): static
     {
         $this->addHeader('Content-type', 'application/json');
-        $this->content = json_encode($object, JSON_UNESCAPED_UNICODE);
+        if (is_object($content) || is_array($content)) {
+            $this->content = json_encode($content, JSON_UNESCAPED_UNICODE);
+        } else {
+            $this->content = $content;
+        }
         return $this;
     }
 

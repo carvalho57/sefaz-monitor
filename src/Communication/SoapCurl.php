@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Service;
+namespace App\Communication;
 
 use App\Model\WebserviceInfo;
 
@@ -12,6 +12,7 @@ class SoapCurl
     {
     }
 
+    #TODO log communication
     public function send(
         WebserviceInfo $wsInfo,
         string $body
@@ -29,11 +30,11 @@ class SoapCurl
             $header[0] .= ";action=\"{$wsInfo->soapAction}\"";
         }
 
+        error_log("urlService: $wsInfo->urlService");
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $wsInfo->urlService);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_HEADER, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $soapMessage);
@@ -42,7 +43,7 @@ class SoapCurl
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
         curl_setopt($ch, CURLOPT_SSLCERT, $this->clientPEMPath);
         curl_setopt($ch, CURLOPT_SSLKEY, $this->keyPEMPath);
-        // curl_setopt($ch, CURLOPT_VERBOSE, true);
+        curl_setopt($ch, CURLOPT_VERBOSE, true);
 
         $response = curl_exec($ch);
 
@@ -50,9 +51,51 @@ class SoapCurl
             throw new \RuntimeException(curl_error($ch));
         }
 
+        if (empty($response)) {
+            throw new \RuntimeException('Empty response from webservice.');
+        }
+
+        $statusCode = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $response   = substr($response, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
+
         curl_close($ch);
 
-        return substr($response, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
+        $dom               = new \DOMDocument();
+        $dom->formatOutput = true;
+        $dom->loadXML($response);
+
+        $body = $dom->getElementsByTagName('Body');
+
+        //Status code ok
+        if ($statusCode !== 200) {
+            if ($body->item(0)->firstElementChild->localName == 'Fault') {
+                $code   = $body->item(0)->getElementsByTagName('Code')->item(0)->firstElementChild->textContent;
+                $reason = $body->item(0)->getElementsByTagName('Reason')->item(0)->firstElementChild->textContent;
+
+                throw new \RuntimeException("Code: {$code} Reason: {$reason}");
+            }
+
+            throw new \RuntimeException($response);
+        }
+
+        $nfeResultMsg = $body->item(0)->firstElementChild->firstElementChild;
+
+        $newDocument                     = new \DOMDocument('1.0', 'UTF-8');
+        $newDocument->preserveWhiteSpace = false;
+        $newDocument->formatOutput       = true;
+        $node                            = $newDocument->importNode($nfeResultMsg, true);
+        $newDocument->appendChild($node);
+
+
+        return $newDocument->saveXML();
+    }
+
+    private function extractSoapMessage(string $message)
+    {
+        $dom = new \DOMDocument('1.0', 'utf-8');
+        $dom->loadXML($message);
+
+        $body = $dom->getElementsByTagName('env:Body');
     }
 
     private function makeSoapMessage(string $urlNamespace, string $messageData)

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Model;
+namespace App\Communication;
 
-class WebServiceConfig
+class CommunicatorConfig
 {
     public function __construct(
         public readonly string $environment,

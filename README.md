@@ -40,6 +40,8 @@ Build e start o container:
 
 ```sh
 docker-compose up -d --build
+docker exec -it sefaz-monitor-app bash
+composer install --no-dev
 ```
 
 Acesse em [http://localhost:8080](http://localhost:8080)

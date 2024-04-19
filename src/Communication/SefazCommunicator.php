@@ -17,14 +17,13 @@ class SefazCommunicator
         $this->soap = new SoapCurl($config->certificateClientPEMPath, $config->certificateKeyPEMPath);
     }
 
-    public function getStatusUf(string $uf, string $environment = '')
+    public function getStatusUf(string $uf, string $environment = '', bool $contingency = false)
     {
         $method      = 'nfeStatusServico';
         $environment = $environment ?: $this->config->environment;
         $ufCode      = State::getStateCode($uf);
 
-
-        $wsInfo = $this->resolveService($uf, $method, $this->config->version, $environment);
+        $wsInfo      = $this->resolveService($uf, $method, $this->config->version, $environment, $contingency);
 
         $message = <<<CONSTSTATSERV
             <consStatServ xmlns="{$wsInfo->urlPortal}" versao="{$wsInfo->version}">
@@ -37,9 +36,11 @@ class SefazCommunicator
         return $this->soap->send($wsInfo, $message);
     }
 
-    private function resolveService(string $uf, string $method, string $version, string $environment): WebServiceInfo
+    private function resolveService(string $uf, string $method, string $version, string $environment, bool $continency): WebServiceInfo
     {
-        $authorizeEnvironment = WebServiceInfo::getAuthorizeEnvironmentByUF($uf);
+        $authorizeEnvironment = !$continency
+                                    ? WebServiceInfo::getAuthorizeEnvironmentByUF($uf)
+                                    : WebServiceInfo::getAuthorizeEnvironmentByUFOnContingency($uf);
 
         $webservices =  WebServiceInfo::getRelations();
 

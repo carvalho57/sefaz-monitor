@@ -45,9 +45,11 @@ class MonitorController
 
     public function listAll(Request $request = null): Response
     {
-        $data = Status::getAll();
+        $listStatus = Status::getAll();
 
-        return(new Response())->json($data);
+        $listStatus = array_map(fn (Status $status) => $status->toArray(), $listStatus);
+
+        return(new Response())->json($listStatus);
     }
 
     public function status(Request $request)

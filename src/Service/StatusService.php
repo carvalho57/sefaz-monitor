@@ -6,6 +6,8 @@ namespace App\Service;
 
 use App\Communication\SefazCommunicator;
 use App\Exception\CannotResolveWebServiceException;
+use App\Exception\WebServiceRejectException;
+use App\Helper\Xml;
 use App\Model\State;
 use App\Model\Status;
 use App\Model\WebServiceInfo;
@@ -19,30 +21,58 @@ class StatusService
         $this->communicator = $sefazCommunicator;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param [type] $uf
+     * @return Status
+     *
+     * @throws WebServiceRejectException
+     * @throws CannotResolveWebServiceException
+     */
     public function getStatusForUF($uf): Status
     {
         $response = $this->communicator->getStatusUf($uf);
 
-        $retConsStatServ = json_decode(json_encode(simplexml_load_string($response)));
+        $xml             = new Xml($response);
+        $retConsStatServ = $xml->toStd();
 
-        if (!in_array($retConsStatServ->cStat, [Status::ATIVO, Status::PARALISADO_SEM_PREVISAO, Status::PARALISADO_TEMPORARIAMENTE])) {
-            //Todo Tratar rejeição
+        $statusCode           = (int)$retConsStatServ->cStat;
+        $statusDescription    = $retConsStatServ->xMotivo;
+
+        if (!in_array($statusCode, [Status::ATIVO, Status::PARALISADO_SEM_PREVISAO, Status::PARALISADO_TEMPORARIAMENTE])) {
+            throw new WebServiceRejectException($statusDescription, $statusCode);
+        }
+
+        $inContigency = false;
+        if ($statusCode != Status::ATIVO) {
+            $contingencyResponse = $this->communicator->getStatusUf(uf: $uf, contingency: true);
+
+            $xml                       = new Xml($contingencyResponse);
+            $contigencyRetConsStatServ = $xml->toStd();
+
+
+            if ($contigencyRetConsStatServ->cStat == Status::ATIVO) {
+                $inContigency    = true;
+                $retConsStatServ = $contigencyRetConsStatServ;
+            }
         }
 
         $expectedReturn = null;
+
         if (!empty($retConsStatServ->dhRetorno)) {
             $expectedReturn = new \DateTimeImmutable($retConsStatServ->dhRetorno);
         }
 
-        $status                      = new Status(
+        $status = Status::create(
             (int)$retConsStatServ->cStat,
-            $retConsStatServ->xMotivo,
             $uf,
             State::getStateName($uf),
             (int)($retConsStatServ->tMed ?? 1),
             $expectedReturn,
             $retConsStatServ->xObs      ?? '',
-            new \DateTimeImmutable($retConsStatServ->dhRecbto)
+            new \DateTimeImmutable($retConsStatServ->dhRecbto),
+            $inContigency
         );
 
         return $status;
@@ -68,7 +98,7 @@ class StatusService
 
             try {
                 $webserviceStatus = $this->getStatusForUF($firstUF);
-            } catch(CannotResolveWebServiceException) {
+            } catch(\Throwable) {
                 continue;
             }
 
@@ -79,9 +109,8 @@ class StatusService
             }
 
             foreach ($ufs as $uf) {
-                $status = new Status(
-                    $webserviceStatus->code,
-                    $webserviceStatus->description,
+                $status = Status::create(
+                    $webserviceStatus->webserviceStatusCode,
                     $uf,
                     State::getStateName($uf),
                     $webserviceStatus->averageResponseTime,

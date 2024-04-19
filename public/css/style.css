@@ -18,13 +18,15 @@ header h1 {
   display: flex;
   flex-wrap: wrap;
   justify-content: left;
+  max-width: 900px;
 }
+
 .card {
   padding: 1rem;
   margin: 2rem; 
   box-shadow: 0 0 10px rgba(93, 93, 93, 0.2);
   text-align: center;
-  width: 330px;
+  width: 350px;
   height: 100%;
 }
 
@@ -35,9 +37,20 @@ header h1 {
 .btn-update {
   display: inline-block;
   margin: 0.3rem;
-  padding: 0.5rem;
+  padding: 1rem;
   font-size: 14px;
+  font-weight: bold;  
+  border: 1px solid white;
+  border-radius: 5px;
+  vertical-align: middle;
 }
+
+.btn-update:hover {
+  color: white;
+  background-color: #aa043b;
+  cursor: pointer;
+}
+
 
 .label {
   display: inline-block;
@@ -45,6 +58,7 @@ header h1 {
   padding: 8px;
   border-radius: 3px;
   margin:0.1rem;
+  cursor: pointer;
 }
 
 .normal {
@@ -69,6 +83,14 @@ header h1 {
 
 .stopped path{
   fill: #f44336;
+} 
+
+.contingency {
+  background-color: #3528aa;
+} 
+
+.contingency path{
+  fill: #3528aa;
 } 
 
 

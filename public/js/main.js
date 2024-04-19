@@ -1,34 +1,36 @@
+
 (() => {
-  const states = document.querySelectorAll(".estado");
-  const updateButton = document.querySelector(".btn-update");
-
-  for (let state of states) {
-    state.addEventListener("mouseover", function (e) {
-      e.stopPropagation();
-
-      const state = e.target.parentNode;
-
-      const stateStatus = {
-        uf: state.getAttribute("uf"),
-        nome: state.getAttribute("nome"),
-        codigoStatus: state.getAttribute("data-codigo-status"),
-        descricaoStatus: state.getAttribute("data-descricao-status"),
-        tempoResposta: state.getAttribute("data-tempo-resposta"),
-      };
-
-      const container = document.querySelector(".container");
-
-      removeCardIfExist();
-      const card = createCard(stateStatus);
-      container.appendChild(card);
+    const states = document.querySelectorAll(".estado");
+    const updateButton = document.querySelector(".btn-update");
+  
+    for (let state of states) {
+      state.addEventListener("mouseover", function (e) {
+        e.stopPropagation();
+  
+        const state = e.target.parentNode;
+  
+        const stateStatus = {
+          uf: state.getAttribute("uf"),
+          nome: state.getAttribute("nome"),
+          codigoStatus: state.getAttribute("data-codigo-status"),
+          descricaoStatus: state.getAttribute("data-descricao-status"),
+          tempoResposta: state.getAttribute("data-tempo-resposta"),
+          contingencia: state.getAttribute("data-contigencia"),
+        };
+  
+        const container = document.querySelector(".container");
+  
+        removeCardIfExist();
+        const card = createCard(stateStatus);
+        container.appendChild(card);
+      });
+    }
+  
+    updateButton.addEventListener("click", () => {
+      update();
     });
-  }
-
-  updateButton.addEventListener("click", () => {
-    update();
-  });
-
-  getStatus();
+  
+    getStatus();
 })();
 
 function removeCardIfExist() {
@@ -48,6 +50,7 @@ function createCard(stateStatus) {
   info.innerHTML = `            
             <p><b>Status</b>: ${stateStatus.codigoStatus} - ${stateStatus.descricaoStatus}</p>
             <p><b>Tempo de Resposta</b>: ${stateStatus.tempoResposta}s</p>
+            <p><b>Em contingência</b>: ${stateStatus.contingencia == 'true' ? 'Sim' : 'Não'}</p>
         `;
 
   card.appendChild(h2);
@@ -67,35 +70,39 @@ function update() {
 
 function getStatus() {
   return request("GET", "/list", function (states) {
+    
+    if(states.length > 0) {
+      const container = document.querySelector(".container");
+      const legend = document.querySelector(".legend");
+
+      container.style.visibility = 'visible';
+      legend.style.visibility = 'visible';
+    }
+
     states.forEach((state) => {
-      const stateElement = document.querySelector(`a[uf="${state.STATE}"]`);
+      const stateElement = document.querySelector(`a[uf="${state.state}"]`);
 
       if (stateElement !== null) {
-        stateElement.setAttribute("data-codigo-status", state.STATUS_CODE);
+        stateElement.setAttribute("data-codigo-status", state.webserviceCode);
         stateElement.setAttribute(
           "data-descricao-status",
-          state.STATUS_DESCRIPTION
+          state.description
         );
         stateElement.setAttribute(
           "data-tempo-resposta",
-          state.AVERAGE_RESPONSE
+          state.averageResponseTime
         );
-
-        let cssClass = "";
-
-        if (state.STATUS_CODE == "107") {
-          cssClass = "normal";
-        } else if (state.STATUS_CODE == "108") {
-          cssClass = "instable";
-        } else if (state.STATUS_CODE == "109") {
-          cssClass = "stopped";
-        }
+        
+        stateElement.setAttribute(
+          "data-contigencia",
+          state.contigency
+        );
 
         stateElement.classList.remove('normal');
         stateElement.classList.remove('instable');
         stateElement.classList.remove('stopped');
     
-        stateElement.classList.add(cssClass);
+        stateElement.classList.add(state.statusDescription);
       }
     });
   });

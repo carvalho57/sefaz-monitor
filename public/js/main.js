@@ -1,4 +1,3 @@
-
 (() => {
     const states = document.querySelectorAll(".estado");
     const updateButton = document.querySelector(".btn-update");

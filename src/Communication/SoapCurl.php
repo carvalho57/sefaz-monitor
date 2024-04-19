@@ -68,7 +68,7 @@ class SoapCurl
 
         //Status code ok
         if ($statusCode !== 200) {
-            if ($body->item(0)->firstElementChild->localName == 'Fault') {
+            if ($body->item(0)?->firstElementChild->localName == 'Fault') {
                 $code   = $body->item(0)->getElementsByTagName('Code')->item(0)->firstElementChild->textContent;
                 $reason = $body->item(0)->getElementsByTagName('Reason')->item(0)->firstElementChild->textContent;
 

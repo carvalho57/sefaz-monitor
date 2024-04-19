@@ -18,14 +18,17 @@
             "email": "gabrielfeocarvalho57@gmail.com"
         }
     ],
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    },
     "require-dev": {
         "symfony/var-dumper": "^7.0",
         "phpunit/phpunit": "^11.0"
     },
     "scripts": {
-        "test": "phpunit"
-    },
-    "require": {
-        "vlucas/phpdotenv": "^5.6"
-    }
+        "test": "phpunit",
+        "post-install-cmd": [
+            "php -r \"copy('.env.example', '.env');\""
+        ]
+    }    
 }
